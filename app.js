@@ -22,7 +22,7 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(expressValidator())
-
+console.log("after validator")
 // route middleware
 app.use("/api",userRouter);
 
