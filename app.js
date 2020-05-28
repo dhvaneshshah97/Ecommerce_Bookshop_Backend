@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const userRouter = require('./routes/user.js');
+const userRouter = require('./routes/route.js');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const mongoose = require('mongoose');
 
@@ -14,9 +17,12 @@ mongoose.connection.on('error', err => {
     console.log(`DB Conncetion Error: ${err.message}` );
 });
 
+// middlewares
+app.use(morgan('dev'))
+app.use(bodyParser.json())
+app.use(cookieParser())
 
 // route middleware
-
 app.use("/api",userRouter);
 
 const port = process.env.PORT || 8000
