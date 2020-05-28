@@ -1,6 +1,6 @@
 const User = require('../models/user.js');
 
-const signup = (req, res) => {
+exports.signup = (req, res) => {
     console.log('req.body', req.body);
     // creates a new user
     const user = new User(req.body);
@@ -11,10 +11,12 @@ const signup = (req, res) => {
                 err
             });
         }
+        user.salt = undefined
+        user.hased_password = undefined
         res.json({
             user
-        })
+        });
     });
 }
 
-module.exports = { signup };
+// module.exports = { signup };

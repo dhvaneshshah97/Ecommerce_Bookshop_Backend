@@ -51,10 +51,10 @@ userSchema.methods = {
         try {
             return crypto.createHmac('sha1',this.salt).update(password).digest('hex');
         } catch(err) {
-            return ''
+            return '';
         }
     }
-}
+};
 
 // creates a 'User' named collection in ecommerce database
 module.exports = mongoose.model("User",userSchema);
