@@ -1,4 +1,4 @@
-const User = require('../models/user.js');
+const User = require('../models/userModel.js');
 const { errorHandler } = require('../helpers/dbErrorHandler.js');
 const jwt = require('jsonwebtoken'); // to generate signed token
 const expressJwt = require('express-jwt'); // for authorization check
@@ -60,4 +60,30 @@ exports.signin = (req, res) => {
 exports.signout = (req, res) => {
     res.clearCookie('t')
     res.json({ message: "Signout success"});
+}
+
+// this method looks for the token in the headers, that the signined user has, if it does not find the token, it does not allow the user to access other routes that can only be accessed by signined user. 
+exports.requireSignin = expressJwt({
+    secret: process.env.JWT_SECRET,
+    userProperty: "auth",
+});
+
+exports.isAuth = (req, res, next) => {
+    let user = req.profile && req.auth && req.profile._id == req.auth._id
+    if(!user) {
+        return res.status(403).json({
+            error: "Access denied"
+        });
+    }
+    next();
+}
+
+exports.isAdmin = (req, res, next) => {
+    if(req.profile.role === 0) {
+        return res.status(403).json({
+            error: "Admin Resource! Access denied"
+        });
+    }
+    next();
+
 }
