@@ -8,5 +8,5 @@ const categorySchema = new mongoose.Schema({
         maxlength: 32,
     },
 }, {timestamps: true});
-// creates a 'User' named collection in ecommerce database
+// creates a 'Category' named collection in ecommerce database
 module.exports = mongoose.model("Category",categorySchema);
