@@ -7,8 +7,8 @@ const uniqueMessage = error => {
     let output;
     try {
         let fieldName = error.errmsg.substring(
-            error.errmsg.lastIndexOf("index:")+7,
-            error.errmsg.lastIndexOf("_1")
+            error.message.lastIndexOf(".$")+2,
+            error.message.lastIndexOf("_1")
         );
         output =
             fieldName.charAt(0).toUpperCase() +

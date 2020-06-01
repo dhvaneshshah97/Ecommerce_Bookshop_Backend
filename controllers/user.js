@@ -1,5 +1,6 @@
 const User = require('../models/user.js');
 
+// This method will run whenever userId will be there in browser's URL bar.
 exports.userById = (req, res, next, id) => {
     User.findById(id, (err, user) =>{
         if(err || !user) {
