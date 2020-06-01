@@ -1,4 +1,4 @@
-const User = require('../models/userModel.js');
+const User = require('../models/user.js');
 const { errorHandler } = require('../helpers/dbErrorHandler.js');
 const jwt = require('jsonwebtoken'); // to generate signed token
 const expressJwt = require('express-jwt'); // for authorization check
@@ -25,7 +25,7 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
     // find the user based on email
-
+    // console.log('req.body contents => ',req.body.password);
     const { email, password } = req.body
     User.findOne({ email }, (err, user) => {
         // if user not found then give json response with error message
