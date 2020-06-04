@@ -58,3 +58,17 @@ exports.update = (req, res) => {
         });
     });
 }
+
+exports.getAll = (req, res, next) => {
+    Category.find( {} , (err, categories) => {
+        if (err) {
+            return res.status(400).json({
+                err
+            });
+        }
+        res.json({
+            categories
+        });
+    })
+
+}
