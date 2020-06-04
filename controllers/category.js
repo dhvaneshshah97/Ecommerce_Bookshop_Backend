@@ -31,7 +31,7 @@ exports.read = (req, res) => {
 }
 
 exports.remove = (req, res) => {
-    let category = req.category;
+    const category = req.category;
     category.remove((err, deletedCategory) => {
         if (err) {
             return res.status(400).json({
@@ -39,14 +39,15 @@ exports.remove = (req, res) => {
             });
         }
         res.json({
+            name: deletedCategory.name,
             message: "Category deleted successfully",
         });
     });
 }
 
 exports.update = (req, res) => {
-    let category = req.category
-    category = _.extend(category, req.body)
+    const category = req.category;
+    category.name = req.body.name;
     category.save((err, data) => {
         if (err) {
             return res.status(400).json({
@@ -59,7 +60,7 @@ exports.update = (req, res) => {
     });
 }
 
-exports.getAll = (req, res, next) => {
+exports.list = (req, res) => {
     Category.find( {} , (err, categories) => {
         if (err) {
             return res.status(400).json({
