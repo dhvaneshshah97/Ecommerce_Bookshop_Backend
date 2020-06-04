@@ -29,3 +29,17 @@ exports.create = (req, res) => {
 exports.read = (req, res) => {
     return res.json(req.category);
 }
+
+exports.remove = (req, res) => {
+    let category = req.category;
+    category.remove((err, deletedCategory) => {
+        if (err) {
+            return res.status(400).json({
+                err,
+            });
+        }
+        res.json({
+            message: "Category deleted successfully",
+        }); 
+    });
+}
