@@ -133,3 +133,32 @@ exports.update = (req, res) => {
 
     });
 };
+
+
+/*
+    * return products by sell / arrival
+    * if we want to return product by sell or arrival, we need query parameters something like this, 
+    * by sell = /products?sortBy=sold&order=desc&limit=4
+    * by arrival = /products?sortBy=createdAt&order=desc&limit=4
+    * if no params are sent, then all products are returned
+*/
+
+exports.list = (req, res) => {
+    let order = req.query.order ? req.query.order : 'asc';
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6; // here we are fetching limit from URL, so it will be fetched in string format and we need to give this value to database, so we have to make it into an integer, that's why we used parsedInt.
+
+    Product.find()
+        .select("-photo") // we will make another request to fetch photo for the product, for now we will not sending photo field because if we do so, our response will be slow
+        .populate('category') // not sure about this
+        .sort([[sortBy, order]])
+        .limit(limit)
+        .exec((err, products) => {
+            if (err) {
+                return res.status(400).json({
+                    error: "Products not found",
+                });
+            }
+            res.send(products);
+        });
+};

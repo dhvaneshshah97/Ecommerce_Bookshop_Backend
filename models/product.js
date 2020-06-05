@@ -27,6 +27,10 @@ const productSchema = new mongoose.Schema({
     quantity: {
         type: Number,
     },
+    sold: {
+        type: Number,
+        default: 0,
+    },
     photo: {
         // Buffer type is used when you usually work with items that get saved in binary form, a good example would be images.
         data: Buffer,
