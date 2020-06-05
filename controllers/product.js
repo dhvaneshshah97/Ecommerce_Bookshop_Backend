@@ -146,7 +146,7 @@ exports.update = (req, res) => {
 exports.list = (req, res) => {
     let order = req.query.order ? req.query.order : 'asc';
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
-    let limit = req.query.limit ? parseInt(req.query.limit) : 6; // here we are fetching limit from URL, so it will be fetched in string format and we need to give this value to database, so we have to make it into an integer, that's why we used parsedInt.
+    let limit = req.query.limit ? parseInt(req.query.limit) : 10; // here we are fetching limit from URL, so it will be fetched in string format and we need to give this value to database, so we have to make it into an integer, that's why we used parsedInt.
 
     Product.find()
         .select("-photo") // we will make another request to fetch photo for the product, for now we will not sending photo field because if we do so, our response will be slow
@@ -159,6 +159,25 @@ exports.list = (req, res) => {
                     error: "Products not found",
                 });
             }
-            res.send(products);
+            res.json(products);
         });
 };
+
+// it will find the products based on the req product category, other products that has same cateogry will be returned 
+
+exports.listRelated = (req, res) => {
+    let limit = req.query.limit ? parseInt(req.query.limit) : 10;
+
+    Product.find({_id: {$ne: req.product}, category: req.product.category})
+        .select("-photo")
+        .limit(limit)
+        .populate('category','_id name')
+        .exec((err, products) => {
+            if (err) {
+                return res.status(400).json({
+                    error: "No related products found!",
+                });
+            }
+            res.json(products);
+        });
+}
