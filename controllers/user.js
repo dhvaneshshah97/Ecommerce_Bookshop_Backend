@@ -22,6 +22,7 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res) => {
+    //  By default, findOneAndUpdate() returns the document as it was before update was applied. So, You should set the new option to true to return the document after update was applied.
     User.findOneAndUpdate({_id: req.profile}, {$set : req.body},{new: true}, (err, user) => {
         if (err) {
             res.status(400).json({
