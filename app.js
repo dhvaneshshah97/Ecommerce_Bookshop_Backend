@@ -21,7 +21,7 @@ mongoose.connection.on('error', err => {
     console.log(`DB Conncetion Error: ${err.message}` );
 });
 
-// middlewares
+// this middleware is used to log incoming requests
 app.use(morgan('dev'))
 
 //this package is used to access client's request data in request.body object as a json.
@@ -32,7 +32,7 @@ app.use(cookieParser())
 // This package is used to validate signup details.
 app.use(expressValidator())
 
-// Reason to use this CORS(Cross Origin Resource Sharing) package: when we send request from forntend(from port 3001) to backend(to port 8000), it will give cors errors, because here both port are different(not the same origin), and to share data between different origins, we have to use CORS.   
+// Reason to use this CORS(Cross Origin Resource Sharing) package: when we send request from forntend(from port 3000) to backend(to port 8000), it will give cors errors, because here both port are different(not the same origin), and to share data between different origins, we have to use CORS.   
 app.use(cors());
 
 // we need to import route middlewares to use

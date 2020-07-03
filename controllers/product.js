@@ -225,6 +225,7 @@ exports.listBySearch = (req, res) => {
             }
         }
     }
+    console.log(findArgs);
 
     Product.find(findArgs)
         .select("-photo")
