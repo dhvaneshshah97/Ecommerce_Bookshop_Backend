@@ -6,7 +6,8 @@ const Product = require('../models/product.js');
 const fs = require('fs');
 
 exports.productById = (req, res, next, id) => {
-    Product.findById(id, (err, product) => {
+    // I want to show the category name on 'Product' component(View Product-single product component), so that's why I need to populate the category here below
+    Product.findById(id).populate('category').exec((err, product) => {
         if (err || !product) {
             return res.status(400).json({
                 error: "Product not found!",
