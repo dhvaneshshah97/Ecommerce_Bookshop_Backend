@@ -66,6 +66,7 @@ exports.signout = (req, res) => {
 exports.requireSignin = expressJwt({
     secret: process.env.JWT_SECRET,
     userProperty: "auth",
+    algorithms: ['HS256']
 });
 
 // why I need this method: IMO, you have your token, and your id is wrapped with your token. Now, you can only surf your profile with your id, by chance if you know someone's id, you may be tempted to use that id and see his/her profile, but in real life, it is prohibited, you are not allowed to see someone's profile by changing the id in url, so to implement all this, and making sure that even if you type someone's id in url, access will be denied because, the id which is wrapped with your token is yours and it will be checked again with the one you have typed in URL. So this is what it does. hence id is necessary to give in URL.

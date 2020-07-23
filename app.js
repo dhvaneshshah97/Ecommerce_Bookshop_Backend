@@ -1,10 +1,13 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
+
 const authRoute = require('./routes/auth.js');
 const userRoute = require('./routes/user.js');
 const categoryRoute = require('./routes/category.js');
 const productRoute = require('./routes/product.js');
+const braintreeRoute = require('./routes/braintree');
+
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -36,10 +39,11 @@ app.use(expressValidator())
 app.use(cors());
 
 // we need to import route middlewares to use
-app.use("/api",authRoute);
-app.use("/api",userRoute);
-app.use("/api",categoryRoute);
-app.use("/api",productRoute);
+app.use("/api", authRoute);
+app.use("/api", userRoute);
+app.use("/api", categoryRoute);
+app.use("/api", productRoute);
+app.use("/api", braintreeRoute);
 
 const port = process.env.PORT || 8000
 app.listen(port, () => {
