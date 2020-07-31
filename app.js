@@ -7,6 +7,7 @@ const userRoute = require('./routes/user.js');
 const categoryRoute = require('./routes/category.js');
 const productRoute = require('./routes/product.js');
 const braintreeRoute = require('./routes/braintree');
+const orderRoute = require('./routes/order');
 
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -44,6 +45,7 @@ app.use("/api", userRoute);
 app.use("/api", categoryRoute);
 app.use("/api", productRoute);
 app.use("/api", braintreeRoute);
+app.use("/api", orderRoute);
 
 const port = process.env.PORT || 8000
 app.listen(port, () => {
