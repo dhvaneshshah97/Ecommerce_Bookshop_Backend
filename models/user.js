@@ -23,7 +23,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
-    salt: String,
+    salt: {
+        type: String
+    },
     role: {             // 0 for user, 1 for admin
         type: Number,
         default: 0
