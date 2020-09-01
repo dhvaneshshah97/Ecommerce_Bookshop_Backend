@@ -147,7 +147,7 @@ exports.update = (req, res) => {
 exports.list = (req, res) => {
     let order = req.query.order ? req.query.order : 'asc';
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
-    let limit = req.query.limit ? parseInt(req.query.limit) : 10; // here we are fetching limit from URL, so it will be fetched in string format and we need to give this value to database, so we have to make it into an integer, that's why we used parsedInt.
+    let limit = req.query.limit ? parseInt(req.query.limit) : 100; // here we are fetching limit from URL, so it will be fetched in string format and we need to give this value to database, so we have to make it into an integer, that's why we used parsedInt.
 
     Product.find()
         .select("-photo") // we will make another request to fetch photo for the product, for now we will not sending photo field because if we do so, our response will be slow
