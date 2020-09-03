@@ -9,30 +9,54 @@ exports.userById = (req, res, next, id) => {
                 error: "User not found"
             });
         }
-        user.salt = undefined
-        user.hashed_password = undefined
-        user.createdAt = undefined
-        user.updatedAt = undefined
+        // user.salt = 'undefined'
+        // user.hashed_password = 'undefined'
+        // user.createdAt = 'undefined'
+        // user.updatedAt = 'undefined'
         req.profile = user;
         next();
     });
 };
 
 exports.read = (req, res) => {
+    req.profile.hashed_password = undefined;
+    req.profile.salt = undefined;
     res.json(req.profile);
+
 };
 
 exports.update = (req, res) => {
     //  By default, findOneAndUpdate() returns the document as it was before update was applied. So, You should set the new option to true to return the document after update was applied.
     User.findOneAndUpdate({ _id: req.profile }, { $set: req.body }, { new: true }, (err, user) => {
+        const { password } = req.body;
         if (err) {
             res.status(400).json({
                 error: "You are not authorized to perform this action!",
             });
         }
-        user.hashed_password = undefined;
-        user.salt = undefined;
-        res.json(user);
+        if (password) {
+            if (password.length < 6) {
+                return res.status(400).json({
+                    error: "password should be min 6 characters long",
+                })
+            } else {
+                user.password = password;
+            }
+        }
+        user.save((err, updatedUser) => {
+            if (err) {
+                console.log('USER UPDATE ERROR', err);
+                return res.status(400).json({
+                    error: 'User update failed'
+                });
+            }
+            updatedUser.hashed_password = undefined;
+            updatedUser.salt = undefined;
+            res.json(updatedUser);
+        })
+        // user.hashed_password = undefined;
+        // user.salt = undefined;
+        // res.json(user);
     });
 
 }
@@ -53,8 +77,8 @@ exports.addOrderToUserHistory = (req, res, next) => {
     })
 
     User.findOneAndUpdate(
-        { _id: req.profile._id }, 
-        { $push: { history: history } }, 
+        { _id: req.profile._id },
+        { $push: { history: history } },
         { new: true },
         (error, data) => {
             if (error) {
@@ -64,19 +88,19 @@ exports.addOrderToUserHistory = (req, res, next) => {
             }
             next();
         }
-        )
+    )
 }
 
 exports.purchaseHistory = (req, res) => {
-    Order.find({user: req.profile._id})
-    .populate('user', '_id name')
-    .sort('-created')
-    .exec((err, orders) => {
-        if(err) {
-            return res.status(400).json({
-                error: err,
-            });
-        }
-        res.json(orders);
-    });
+    Order.find({ user: req.profile._id })
+        .populate('user', '_id name')
+        .sort('-created')
+        .exec((err, orders) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err,
+                });
+            }
+            res.json(orders);
+        });
 }
