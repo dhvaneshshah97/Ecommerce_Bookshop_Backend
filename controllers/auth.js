@@ -49,7 +49,7 @@ exports.signin = (req, res) => {
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
 
         //once we have our token, we want to persist the token as 't' in cookie with expiry date
-        res.cookie('t', token, { expire: new Date() + 9999 });
+        res.cookie('t', token, { maxAge: 600000 }); // user sign out after 600000 miliseconds(10 mins)
 
         // return response with user and token to frontend client
         const { _id, name, email, role } = user;
